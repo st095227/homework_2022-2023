@@ -28,7 +28,7 @@ public:
 	}
 	void swap(int posi, int posj)
 	{
-		int m = this->data[ind(posi)];
+		t m = this->data[ind(posi)];
 		this->data[ind(posi)] = this->data[ind(posj)];
 		this->data[ind(posj)] = m;
 	}
@@ -109,7 +109,7 @@ public:
 	}
 	t extractbegin()
 	{
-		int m = this->data[0];
+		t m = this->data[0];
 		for (int i = 0; i < (count - 1); ++i)
 		{
 			this->data[i] = this->data[i + 1];
@@ -134,7 +134,7 @@ public:
 		}
 		else
 		{
-			int m = this->data[position];
+			t m = this->data[position];
 			for (int i = position; i < (count - 1); ++i)
 			{
 				this->data[i] = this->data[i + 1];
