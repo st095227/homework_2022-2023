@@ -182,7 +182,7 @@ public:
 		this->count = arr.count;
 		this->capacity = arr.capacity;
 		delete[] data;
-		data = new int[capacity];
+		data = new t[capacity];
 		for (int i = 0; i < this->count; ++i)
 		{
 			data[i] = arr.data[i];

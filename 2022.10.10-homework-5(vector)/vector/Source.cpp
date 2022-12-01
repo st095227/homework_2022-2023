@@ -186,7 +186,7 @@ public:
 			this->count = arr.count;
 			this->capacity = arr.capacity;
 			delete[] data;
-			data = new int[capacity];
+			data = new t[capacity];
 			for (int i = 0; i < this->count; ++i)
 			{
 				data[i] = arr.data[i];
@@ -204,6 +204,8 @@ int main(int argc, char** argv)
 	s[3] = 'A';
 	s[4] = 'H';
 	cout << s << endl;
+	VectorM<char> s14(5);
+	s14 = s;
 
 	VectorM<int> s1(5);
 	s1[0] = 5;
