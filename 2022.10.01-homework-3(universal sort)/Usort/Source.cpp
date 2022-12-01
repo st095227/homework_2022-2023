@@ -137,8 +137,13 @@ int main()
 
 	string b[4]{ "wow","super", "programm", "Ha"};
 	print<string>(b, 4);
-	universal_sort(b, 4, compSTR, qsort);
+	universal_sort(b, 4, compSTR, Bubble);
 	print<string>(b, 4);
+
+	string b1[4]{ "wow","super", "programm", "Ha" };
+	print<string>(b1, 4);
+	universal_sort(b1, 4, compSTR, qsort);
+	print<string>(b1, 4);
 
 	return 0;
 }

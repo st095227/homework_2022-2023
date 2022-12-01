@@ -179,15 +179,19 @@ public:
 
 	VectorM operator=(const VectorM<t>& arr)
 	{
-		this->count = arr.count;
-		this->capacity = arr.capacity;
-		delete[] data;
-		data = new int[capacity];
-		for (int i = 0; i < this->count; ++i)
+		if (&arr == this)
 		{
-			data[i] = arr.data[i];
+			return *this;
 		}
-		return *this;
+			this->count = arr.count;
+			this->capacity = arr.capacity;
+			delete[] data;
+			data = new int[capacity];
+			for (int i = 0; i < this->count; ++i)
+			{
+				data[i] = arr.data[i];
+			}
+			return *this;
 	}
 };
 
@@ -199,6 +203,27 @@ int main(int argc, char** argv)
 	s[2] = 'H';
 	s[3] = 'A';
 	s[4] = 'H';
-	cout << s;
+	cout << s << endl;
+
+	VectorM<int> s1(5);
+	s1[0] = 5;
+	s1[1] = 3;
+	s1[2] = 4;
+	s1[3] = 8;
+	s1[4] = 9;
+	VectorM<int> s2(7);
+	s2 = s1;
+	cout << s2 << endl;
+
+	cin >> s1;
+	cout << s1 << endl;
+
+	s1.insert(124, 5);
+	s1.insert(544, 2);
+	cout << s1 << endl;
+	s1.extract(1);
+	cout << s1 << endl;
+	s1.swap(1, 5);
+	cout << s1 << endl;
 	return 0;
 }

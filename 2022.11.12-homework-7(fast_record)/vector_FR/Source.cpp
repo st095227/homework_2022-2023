@@ -206,6 +206,7 @@ void write_in_file(VectorM<T> &s)
 template<class T>
 VectorM<T>* read_from_file(ifstream &file)
 {
+	file.clear();
 	file.seekg(0);
 	int b = 0;
 	char a;
@@ -213,6 +214,7 @@ VectorM<T>* read_from_file(ifstream &file)
 	{
 		++b;
 	}
+	cout << b;
 	file.clear();
 	file.seekg(0);
 	char* ch = new char[b];
@@ -220,6 +222,7 @@ VectorM<T>* read_from_file(ifstream &file)
 	VectorM<T>* ps;
 	ps = reinterpret_cast<VectorM<T>*>(ch);
 	return ps;
+	delete[] ch;
 	//file.close();
 }
 
@@ -234,7 +237,7 @@ int main(int argc, char** argv)
 
 
 	write_in_file(s);
-	ifstream in("output.txt");
+	ifstream in("output.txt", ios::binary);
 
 	cout << *read_from_file<int>(in);
 	in.close();
