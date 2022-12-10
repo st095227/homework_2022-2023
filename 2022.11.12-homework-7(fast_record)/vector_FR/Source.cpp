@@ -179,6 +179,10 @@ public:
 
 	VectorM operator=(const VectorM<t>& arr)
 	{
+		if (&arr == this)
+		{
+			return *this;
+		}
 		this->count = arr.count;
 		this->capacity = arr.capacity;
 		delete[] data;
@@ -192,54 +196,53 @@ public:
 	
 };
 template<class T>
-void write_in_file(VectorM<T> &s)
+void write_in_file(VectorM<T> &s, string st)
 {
-	ofstream file("output.txt");
+	ofstream file(st);
 	//file.seekg(0);
-	int n = (s.count) * (sizeof s.data[0]) + 8;
-	char* ch1 = new char[n];
-	ch1 = reinterpret_cast<char*>(&s);
-	file.write(ch1, n);
+	int n = (s.count) * (sizeof s.data[0]);
+	file << s.count;
+	file.write(reinterpret_cast<char*>(s.data), n);
 	file.close();
 }
 
 template<class T>
-VectorM<T>* read_from_file(ifstream &file)
+VectorM<T> read_from_file(ifstream& file)
 {
 	file.clear();
 	file.seekg(0);
 	int b = 0;
-	char a;
-	while (file >> a)
-	{
-		++b;
-	}
-	cout << b;
-	file.clear();
-	file.seekg(0);
-	char* ch = new char[b];
-	file.read(ch, b);
-	VectorM<T>* ps;
-	ps = reinterpret_cast<VectorM<T>*>(ch);
-	return ps;
-	delete[] ch;
-	//file.close();
+	file >> b;
+	VectorM<T> v(b);
+	char* ch = new char[b*sizeof(T)+1];
+	ch[b * sizeof(T)] = 0;
+	file.read(ch,b * sizeof(T));
+	v.count = b;
+	v.data = reinterpret_cast<T*>(ch);
+	return v;
+	file.close();
 }
 
 int main(int argc, char** argv)
 {
 	VectorM<int> s(5);
-	s[0] = 1;
-	s[1] = 2;
-	s[2] = 3;
-	s[3] = 4;
-	s[4] = 5;
+	s[0] = 123;
+	s[1] = 1221;
+	s[2] = 5;
+	s[3] = 8;
+	s[4] = 99;
+	VectorM<char> s1(5);
+	s1[0] = 'b';
+	s1[1] = 'b';
+	s1[2] = 'a';
+	s1[3] = 'a';
+	s1[4] = 'c';
 
-
-	write_in_file(s);
-	ifstream in("output.txt", ios::binary);
-
-	cout << *read_from_file<int>(in);
-	in.close();
+	//write_in_file(s, "output.txt");
+	//write_in_file(s1, "output1.txt");
+	ifstream in("output.txt");
+	ifstream in1("output1.txt");
+	cout << read_from_file<int>(in);
+	cout << read_from_file<char>(in1);
 	return 0;
 }
