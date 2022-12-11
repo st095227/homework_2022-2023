@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cd /
-cd /mnt/d/homeworkPR/homework_2022-2023/2022.12.11-homework-11_Bash/x64/Debug
+cd /mnt/d/homeworkPR/homework_2022-2023/2022.12.11-homework-11_Bash/exeF
 #pwd
 #ls -l
 ./1.exe &
