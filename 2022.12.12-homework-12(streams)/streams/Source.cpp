@@ -5,9 +5,9 @@
 #include <thread>
 
 using namespace std;
+static Fraction B(1, 1);
 void x4vec(vector<Fraction> v)
 {
-	static Fraction B(1, 1);
 	for (long int i = 0; i < 1750000; ++i)
 	{
 		B = B + v[i];
