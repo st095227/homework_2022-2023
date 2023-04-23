@@ -15,6 +15,7 @@ std::deque <std::packaged_task<int()>> foo_tasks;
 std::vector<int> createV(int a)
 {
 	std::vector<int> b(a);
+	b[0] = -rand();
 	return b;
 }
 
@@ -26,7 +27,7 @@ vector<int> sorting(vector<int> a)
 
 int summ(vector<int> b)
 {
-	return 2;
+	return b[0];
 }
 
 void create_thread()
@@ -77,8 +78,8 @@ void foo_thread()
 
 //std::thread th1(create_thread);
 
-//template<typename Func>
-int create_task_for_thread(int a)
+template<typename Func>
+int create_task_for_thread(Func f, int a)
 {
 	std::packaged_task<vector<int>()> task(bind(createV,a));
 	std::future<vector<int>> res = task.get_future();
@@ -87,7 +88,6 @@ int create_task_for_thread(int a)
 		create_tasks.push_back(std::move(task));
 	}
 	
-	
 	std::packaged_task<vector<int>()> task2(bind(sorting, res.get()));
 
 	std::future<vector<int>> res2 = task2.get_future();
@@ -95,7 +95,7 @@ int create_task_for_thread(int a)
 		std::lock_guard<std::mutex> lk(m);
 		sort_tasks.push_back(std::move(task2));
 	}
-	std::packaged_task<int()> task3(bind(summ, res2.get()));
+	std::packaged_task<int()> task3(bind(f, res2.get()));
 
 	std::future<int> res3 = task3.get_future();
 	{
@@ -112,6 +112,11 @@ int main()
 	std::thread th2(sort_thread);
 	std::thread th3(foo_thread);
 	
-	cout << create_task_for_thread(12);
+	for (int i=0; i<30; ++i)
+		cout << create_task_for_thread(summ, i + 5) << endl;
+
+	th1.join();
+	th2.join();
+	th3.join();
 	return 0;
 }
