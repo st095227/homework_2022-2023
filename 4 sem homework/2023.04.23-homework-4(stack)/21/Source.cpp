@@ -84,7 +84,7 @@ public:
 		return old_head ? old_head->data : std::shared_ptr<T>();
 	}
 };
-long long int foo1(threadsafe_stack<long long> a, long long int n)
+long long int foo1(threadsafe_stack<long long>& a, long long int n)
 {
 	long long int c = 0;
 	for (long long int i = 0; i < n; ++i)
@@ -103,31 +103,31 @@ long long int foo2(lock_free_stack<long long>& a, long long int n)
 
 int main()
 {
-	//threadsafe_stack<long long> st1;
-	lock_free_stack<long long> st2;
-	//for (long long int i = 0; i < 10000000; ++i)
-		//st1.push(i);
-	for (long long i = 0; i < 10000000; ++i)
-		st2.push(i);
+	threadsafe_stack<long long> st1;
+	//lock_free_stack<long long> st2;
+	for (long long int i = 0; i < 10000000; ++i)
+		st1.push(i);
+	//for (long long i = 0; i < 10000000; ++i)
+		//st2.push(i);
 
 	srand(time(0));
-	/*thread s1(foo1, st1, 2500000);
-	thread s2(foo1, st1, 2500000);
-	thread s3(foo1, st1, 2500000);
-	thread s4(foo1, st1, 2500000);
+	thread s1(foo1, ref(st1), 2500000);
+	thread s2(foo1, ref(st1), 2500000);
+	thread s3(foo1, ref(st1), 2500000);
+	thread s4(foo1, ref(st1), 2500000);
 	s1.join();
-	s2.join(); // в первом случае врем€ выполнени€ программы 39.4 сек
+	s2.join(); // в первом случае врем€ выполнени€ программы 7.3 сек
 	s3.join();
-	s4.join();*/
+	s4.join();
 
-	thread s1(foo2, ref(st2), 2500000);
+	/*thread s1(foo2, ref(st2), 2500000);
 	thread s2(foo2, ref(st2), 2500000);
 	thread s3(foo2, ref(st2), 2500000);
 	thread s4(foo2, ref(st2), 2500000);
 	s1.join();
-	s2.join(); // во втором случае врем€ выполнени€ программы 6.5 сек
+	s2.join(); // во втором случае врем€ выполнени€ программы 13.232 сек
 	s3.join();
-	s4.join();
+	s4.join();*/
 	cout << "runtime = " << clock() << endl;
 	return 0;
 }

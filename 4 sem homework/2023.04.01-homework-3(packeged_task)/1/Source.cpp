@@ -6,6 +6,7 @@
 #include<vector>
 #include<algorithm>
 #include<iostream>
+#include"Windows.h"
 using namespace std;
 std::mutex m;
 std::deque<std::packaged_task<std::vector<int>()>> create_tasks;
@@ -29,22 +30,31 @@ int summ(vector<int> b)
 {
 	return b[0];
 }
+bool f = false;
 
 void create_thread()
 {
-	while (1)
+	int i = 0;
+	while (i<1500)
 	{
 		std::packaged_task<std::vector<int>()> task;
 		{
 			std::lock_guard<std::mutex> lk(m);
 			if (create_tasks.empty())
+			{
+				++i;
+				if (i>500) Sleep(15);
 				continue;
+			}
+			i = 0;
 			task = std::move(create_tasks.front());
 			create_tasks.pop_front();
 		}
 		task();
 	}
+	f = true;
 }
+bool f1 = false;
 void sort_thread()
 {
 	while (1)
@@ -53,12 +63,16 @@ void sort_thread()
 		{
 			std::lock_guard<std::mutex> lk(m);
 			if (sort_tasks.empty())
+			{
+				if (f) break;
 				continue;
+			}
 			task = std::move(sort_tasks.front());
 			sort_tasks.pop_front();
 		}
 		task();
 	}
+	f1 = true;
 }
 void foo_thread()
 {
@@ -68,7 +82,10 @@ void foo_thread()
 		{
 			std::lock_guard<std::mutex> lk(m);
 			if (foo_tasks.empty())
+			{
+				if (f1) break;
 				continue;
+			}
 			task = std::move(foo_tasks.front());
 			foo_tasks.pop_front();
 		}
@@ -112,7 +129,7 @@ int main()
 	std::thread th2(sort_thread);
 	std::thread th3(foo_thread);
 	
-	for (int i=0; i<30; ++i)
+	for (int i=0; i<300; ++i)
 		cout << create_task_for_thread(summ, i + 5) << endl;
 
 	th1.join();

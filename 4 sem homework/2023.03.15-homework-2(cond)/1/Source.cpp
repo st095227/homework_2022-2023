@@ -76,7 +76,7 @@ void generator(int k)
 {
 	for (int i = 0; i < k; ++i)
 	{
-		Sleep(150);
+		Sleep(600);
 		//srand(time(NULL));
 		//int num =	rand() % (9);
 		a.push(1);
@@ -89,17 +89,17 @@ void processing(int k)
 	{
 		short c;
 		a.wait_and_pop(c);
-		Sleep(10);
+		Sleep(200);
 	}
 	
 }
 
 int main()
 {
-	thread S1(generator, 50);
-	thread S2(generator,  50);
-	thread S3(generator, 50);
-	thread S4(processing, 150);
+	thread S1(generator, 75);
+	thread S2(generator,  75);
+	thread S3(processing, 75);
+	thread S4(processing, 75);
 	S1.join();
 	S2.join();
 	S3.join();
